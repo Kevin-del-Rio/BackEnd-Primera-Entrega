@@ -1,25 +1,122 @@
-import {Router} from 'express';
+import { Router } from 'express';
+import ProductManager from '../classProduct.js';
 
 const router = Router();
+const pm = new ProductManager();
+
+let products = [];
+
+let traerProductos = async () => {
+    products = await pm.getProduct();
+    return products;
+}
+
 // MOSTAR TODOS LOS PRODUCTOS
-router.get('/', (req, res)=>{
-    res.send("Aca estan los productos")
-});
+router.get('/', async (req, res) => {
+    try {
+        let { limit } = req.query
+        let products = await traerProductos()
+        if (limit !== undefined) {
+            limit = parseInt(limit);
+            products = limit > 0 ? products.slice(0, limit) : [];
+        }
+        res.status(200).send(products);
+    }
+    catch (e) {
+        res.status(404).send({
+            status: 'WRONG',
+            code: 409,
+            message: e.message,
+            detail: e.detail
+        });
+    }
+})
+
 // MOSTRAR UN PRODUCTO
-router.get('/:pid', (req, res)=>{
-    res.send("Aca solo el producto con  id...")
-});
-// AGREGAR UN PRODUCTO
-router.post('/', (req, res)=>{  
-    res.send("Aca creamos un nuevo producto")
-});
-// ACTUALIZAR UN PRODUCTO
-router.put('/:pid', (req, res)=>{
-    res.send("Aca modificamos el producto por  id...")
-});
-// BORRAR UN PRODUCTO
-router.delete('/:pid', (req, res)=>{
-    res.send("Aca eliminamos el producto por  id...")
-});
+router.get('/:pid', async (req, res) => {
+    try {        
+        let id = Number(req.params.id);
+        let product = await pm.getProductById(id)
+        console.log(product)
+        res.status(200).send(product);
+    }
+    catch (e) {
+        res.status(404).send({
+            status: 'WRONG',
+            code: e.code,
+            message: e.message,
+            detail: e.detail
+        });
+    }
+})
+// // AGREGAR UN PRODUCTO
+router.post('/', async (req, res) => {
+    let product = req.body;
+    try {
+        await pm.addProduct(
+            product.title,
+            product.description,
+            product.price,
+            product.code,
+            product.stock,
+            product.category,
+            product.thumbnail
+        )
+        res.status(200).send(product);
+    }
+    catch (e) {
+        res.status(409).send({
+            status: 'WRONG',
+            code: 409,
+            message: e.message,
+            detail: e.detail
+        });
+    }
+})
+// // ACTUALIZAR UN PRODUCTO
+router.put('/:id', async (req, res) => {
+    let id = req.params.id
+    let new_product = {
+        id: id,
+        field: req.body.field,
+        newValue: req.body.newValue
+    }
+    try {
+        await pm.updateProduct(new_product)
+        res.status(200).send({
+            status: 'OK',
+            message: "Producto actualizado correctamente",
+            data: new_product
+        })
+    }
+    catch (e) {
+        res.status(200).send({
+            message: "Producto actualizado correctamente",
+            data: new_product
+        })
+    }
+})
+// // BORRAR UN PRODUCTO
+router.delete('/:id', async (req, res) => {
+    let id = req.params.id;
+    try {
+        id = parseInt(id)
+        await pm.deleteProduct(id);
+        res.status(200).send({
+            status: 'OK',
+            message: "Producto eliminado correctamente",
+            data: { id: id }
+        })
+    }
+    catch (e) {
+        res.status(409).send({
+            status: 'WRONG',
+            message: e.message,
+            detail: e.detail,
+            data: { id: id }
+        })
+    }
+
+})
 
 export default router;

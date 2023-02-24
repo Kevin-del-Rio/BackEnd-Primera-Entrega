@@ -17,9 +17,7 @@ class Product {
     }
 
 }
-
-
-class ProductManager {
+ class ProductManager {
     #listaProducts;
     #productDirPath;
     #productsFilePath;
@@ -58,6 +56,7 @@ class ProductManager {
             throw Error(`Error creando producto nuevo: ${JSON.stringify(productoNuevo)}, detalle del error: ${error}`);
         }
     }
+
     getProduct = async () => {
         try {
             await this.#prepararDirectorioBase();
@@ -104,128 +103,31 @@ class ProductManager {
         await this.#fs.promises.writeFile(this.#productsFilePath, JSON.stringify(this.#listaProducts));
         console.log(this.#listaProducts)
     }
-
-}
-// -----------------------------------------------------------------------------------
-class Cart {
-    static id = 1;
-    listaProduct;
-    constructor() {
-        this.id = Cart.id++;
-        this.listaProduct = new Array()
-    }
-
-}
-class CartManager {
-    #listaCarts;
-    #cartDirPath;
-    #cartsFilePath;
-    #fs;
-    constructor() {
-        this.#listaCarts = new Array();
-        this.#cartDirPath = "./DataBaseCart";
-        this.#cartsFilePath = this.#cartDirPath + "/Carts.json";
-        this.#fs = fs
-    }
-
-    #prepararDirectorioBaseCart = async () => {
-        await this.#fs.promises.mkdir(this.#cartDirPath, { recursive: true });
-        if (!this.#fs.existsSync(this.#cartsFilePath)) {
-            await this.#fs.promises.writeFile(this.#cartsFilePath, "[]");
-        }
-    }
-
-    #traerCarts = async () => {
-        let cartsFile = await this.#fs.promises.readFile(this.#cartsFilePath, "utf-8");
-        this.#listaCarts = JSON.parse(cartsFile);
-        return this.#listaCarts;
-    }
-
-    addcart = async () => {
-        let newCart = new Cart();
-        newCart.listaProduct.push(4)
-        console.log("Creando nuevo carrito:");
-        console.log(newCart);
-        try {
-            await this.#prepararDirectorioBaseCart()
-            await this.#traerCarts();
-            console.log(this.#listaCarts);
-            this.#listaCarts.push(newCart)
-            console.log("Actualizando lista carritos:");
-            console.log(this.#listaCarts);
-            await this.#fs.promises.writeFile(this.#cartsFilePath, JSON.stringify(this.#listaCarts))
-        } catch (error) {
-            throw Error(Error`Creando nuevo carrito:" ${JSON.stringify(newCart)}, detalle error: ${error}`);
-        }
-    }
-
-    addcartProduct = async (idCart, idProduct) => {
-        try {
-            await this.#prepararDirectorioBaseCart()
-            let listaAux = await this.#traerCarts();
-
-            // console.log("Lista de carts")
-            // console.log(listaAux)
-
-            let indexCart = listaAux.findIndex(cart => cart.id === idCart);
-            if (indexCart < 0) {
-                console.log(`El carrito con id: ${idCart} no existe`)
-            } else {
-                // console.log('entro')                
-                listaAux[indexCart].listaProduct.push(idProduct)
-                console.log(`Productocon id: ${idProduct} agregado al carrito con id: ${idCart}`);
-                // console.log(listaAux)
-            }
-            await this.#fs.promises.writeFile(this.#cartsFilePath, JSON.stringify(this.#listaCarts))
-        } catch (error) {
-            throw Error(Error`Creando nuevo carrito" , detalle error: ${error}`);
-        }
-    }
-
-
 }
 
-
-
-
-// module.exports = ProductManager;
 export default ProductManager;
 
+
+// // PRODUCTOS
 let prod = new ProductManager();
 console.log(prod);
-let cart = new CartManager();
-console.log(cart);
-
 let productos = async () => {
     let produ = await prod.getProduct();
     console.log(produ)
 }
-// 
-// title, description, price, thumbnail, code, status, stock, category
-let persistirproductos = async () => {
-    await prod.addProduct('Monitor', '24"', 1000, 'sin foto', 'uno', true, 10, "hola");
-    await prod.addProduct('Teclado', '80%', 250, 'sin foto', 'dos', true, 10, "chau");
-    await prod.addProduct('Cascos', 'Gamer', 500, 'sin foto', 'tres', false, 100, "hola");
-    await prod.addProduct('Mouse', 'Optico', 110, 'sin foto', 'cuatro', false, 20, "chau");
-    await prod.addProduct('Monitor', '19"', 1000, 'sin foto', 'cinco', true, 10, "hola");
-    await prod.addProduct('Teclado', '70%', 250, 'sin foto', 'seis', false, 10, "chau");
-    await prod.addProduct('Cascos', 'comun', 500, 'sin foto', 'siete', true, 100, "chau");
-    await prod.addProduct('Mouse', 'Optico', 110, 'sin foto', 'ocho', false, 20, "hola");
-};
-// persistirproductos();
-
-let persistirCarts = async () => {
-    await cart.addcart();
-    await cart.addcart();
-    await cart.addcart();
-    await cart.addcart();
-};
-// persistirCarts();
-
-
-cart.addcartProduct(3, 1);
-
-// // prod.getProductById(8);
+// // title, description, price, thumbnail, code, status, stock, category
+// let persistirproductos = async () => {
+//     await prod.addProduct('Monitor', '24"', 1000, 'sin foto', 'uno', true, 10, "hola");
+//     await prod.addProduct('Teclado', '80%', 250, 'sin foto', 'dos', true, 10, "chau");
+//     await prod.addProduct('Cascos', 'Gamer', 500, 'sin foto', 'tres', false, 100, "hola");
+//     await prod.addProduct('Mouse', 'Optico', 110, 'sin foto', 'cuatro', false, 20, "chau");
+//     await prod.addProduct('Monitor', '19"', 1000, 'sin foto', 'cinco', true, 10, "hola");
+//     await prod.addProduct('Teclado', '70%', 250, 'sin foto', 'seis', false, 10, "chau");
+//     await prod.addProduct('Cascos', 'comun', 500, 'sin foto', 'siete', true, 100, "chau");
+//     await prod.addProduct('Mouse', 'Optico', 110, 'sin foto', 'ocho', false, 20, "hola");
+// }
+// // persistirproductos();
+// prod.getProductById(2);
 
 // // prod.updateProductById(1,{title:'nico', description: 'Persona', price:110, thumbnail:'sin foto', code:'4fkr5d',stock:20} );
 
