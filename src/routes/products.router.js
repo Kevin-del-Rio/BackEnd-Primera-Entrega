@@ -6,16 +6,16 @@ const pm = new ProductManager();
 
 let products = [];
 
-let traerProductos = async () => {
-    products = await pm.getProduct();
-    return products;
-}
+// let traerProductos = async () => {
+//     products = await pm.getProduct();
+//     return products;
+// }
 
 // MOSTAR TODOS LOS PRODUCTOS
 router.get('/', async (req, res) => {
     try {
         let { limit } = req.query
-        let products = await traerProductos()
+        let products = await pm.getProduct()
         if (limit !== undefined) {
             limit = parseInt(limit);
             products = limit > 0 ? products.slice(0, limit) : [];
@@ -82,7 +82,7 @@ router.put('/:id', async (req, res) => {
         newValue: req.body.newValue
     }
     try {
-        await pm.updateProduct(new_product)
+        await pm.updateProduct(id, new_product)
         res.status(200).send({
             status: 'OK',
             message: "Producto actualizado correctamente",

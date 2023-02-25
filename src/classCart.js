@@ -119,7 +119,7 @@ class CartManager {
 export default CartManager;
 
 
-//let cart = new CartManager();
+// let cart = new CartManager();
 // console.log(cart);
 
 // let carts = async () => {
@@ -138,7 +138,7 @@ export default CartManager;
 //     await cart.addcart();
 // };
 
-// // persistirCarts();
+// persistirCarts();
 // // cart.addProductCart(9, 2);
 // // cart.deleteCart(9)
 // // cart.getCartById(5)

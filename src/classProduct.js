@@ -72,8 +72,8 @@ class Product {
         await this.#traerProductos();
         let prod = await this.#listaProducts.filter(prod => prod.id === id);
         return prod.length > 0
-            ? console.log(`Producto id = ${id} encontrado: `, prod)
-            : console.error(`Producto con id: ${id} no encontrado.`, ' “Not found” ');
+             ? console.log(`Producto id = ${id} encontrado: `, prod)
+             : console.error(`Producto con id: ${id} no encontrado.`, ' “Not found” ');
     }
 
     deleteProduct = async (id) => {
@@ -109,12 +109,12 @@ export default ProductManager;
 
 
 // // PRODUCTOS
-let prod = new ProductManager();
-console.log(prod);
-let productos = async () => {
-    let produ = await prod.getProduct();
-    console.log(produ)
-}
+// let prod = new ProductManager();
+// console.log(prod);
+// let productos = async () => {
+//     let produ = await prod.getProduct();
+//     console.log(produ)
+// }
 // // title, description, price, thumbnail, code, status, stock, category
 // let persistirproductos = async () => {
 //     await prod.addProduct('Monitor', '24"', 1000, 'sin foto', 'uno', true, 10, "hola");
@@ -129,7 +129,7 @@ let productos = async () => {
 // // persistirproductos();
 // prod.getProductById(2);
 
-// // prod.updateProductById(1,{title:'nico', description: 'Persona', price:110, thumbnail:'sin foto', code:'4fkr5d',stock:20} );
+// prod.updateProductById(2,{title:'kevin', description: 'Persona', price:1, thumbnail:'sin foto',code:'4fkr5d', status:false,stock:20,category:'chau'} );
 
 // // prod.deleteProduct(8)
 
