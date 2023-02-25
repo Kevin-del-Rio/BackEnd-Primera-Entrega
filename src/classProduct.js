@@ -6,7 +6,7 @@ class Product {
         this.title = title;
         this.description = description;
         this.price = price;
-        this.thumbnail = thumbnail;
+        this.thumbnail = thumbnail || [];
         this.code = code;
         this.status = status;
         this.stock = stock;
@@ -108,7 +108,7 @@ class Product {
 export default ProductManager;
 
 
-// // PRODUCTOS
+// // // PRODUCTOS
 // let prod = new ProductManager();
 // console.log(prod);
 // let productos = async () => {
@@ -126,11 +126,11 @@ export default ProductManager;
 //     await prod.addProduct('Cascos', 'comun', 500, 'sin foto', 'siete', true, 100, "chau");
 //     await prod.addProduct('Mouse', 'Optico', 110, 'sin foto', 'ocho', false, 20, "hola");
 // }
-// // persistirproductos();
+// persistirproductos();
 // prod.getProductById(2);
 
 // prod.updateProductById(2,{title:'kevin', description: 'Persona', price:1, thumbnail:'sin foto',code:'4fkr5d', status:false,stock:20,category:'chau'} );
 
 // // prod.deleteProduct(8)
 
-// // productos()
+// productos()

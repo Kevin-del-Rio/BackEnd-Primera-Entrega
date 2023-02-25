@@ -1,15 +1,11 @@
 import { Router } from 'express';
 import ProductManager from '../classProduct.js';
+import { uploader } from '../utils.js';
+
 
 const router = Router();
 const pm = new ProductManager();
 
-let products = [];
-
-// let traerProductos = async () => {
-//     products = await pm.getProduct();
-//     return products;
-// }
 
 // MOSTAR TODOS LOS PRODUCTOS
 router.get('/', async (req, res) => {
@@ -35,7 +31,7 @@ router.get('/', async (req, res) => {
 // MOSTRAR UN PRODUCTO
 router.get('/:pid', async (req, res) => {
     try {        
-        let id = Number(req.params.id);
+        let id = await Number(req.params.id);
         let product = await pm.getProductById(id)
         console.log(product)
         res.status(200).send(product);
