@@ -1,19 +1,14 @@
 import fs from 'file-system'
-class Product {
-    static id = 1;
-    status = true;
-    constructor(title, description, price, thumbnail, code, status, stock, category) {
+class Product {   
+    constructor(title, description, price, thumbnail, status, stock, category) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.thumbnail = thumbnail || [];
-        this.code = code;
         this.status = status;
         this.stock = stock;
-        this.category = category
-        this.id = Product.id++;
-        // hay que mejorar el id y tambien implementar bien el code,
-        // tambien usar para imagenes un array
+        this.category = category    
+        this.code = Math.random().toString(30).substring(2);
     }
 
 }
@@ -27,6 +22,7 @@ class Product {
         this.#productDirPath = "./DataBaseProducts";
         this.#productsFilePath = this.#productDirPath + "/Productos.json";
         this.#fs = fs
+        this.id = 1;
     }
 
     #prepararDirectorioBase = async () => {
@@ -41,8 +37,9 @@ class Product {
         this.#listaProducts = JSON.parse(productsFile);
     }
 
-    addProduct = async (title, description, price, thumbnail, code, status, stock, category) => {
-        var productoNuevo = new Product(title, description, price, thumbnail, code, status, stock, category);
+    addProduct = async (title, description, price, thumbnail, status, stock, category) => {
+
+        var productoNuevo = new Product(title, description, price, thumbnail, status, stock, category);
 
         console.log("Producto a registrar:");
         console.log(productoNuevo);
@@ -50,6 +47,14 @@ class Product {
         try {
             await this.#prepararDirectorioBase();
             await this.#traerProductos();
+            if(this.#listaProducts.some(prod => prod.code === productoNuevo.code)){
+				console.error("El código ya existe")
+			}
+            while (this.#listaProducts.some(prod => prod.id === this.id)){
+                this.id++;
+            } 
+
+            productoNuevo.id = this.id;
             this.#listaProducts.push(productoNuevo);
             await this.#fs.promises.writeFile(this.#productsFilePath, JSON.stringify(this.#listaProducts));
         } catch (error) {
@@ -115,16 +120,16 @@ export default ProductManager;
 //     let produ = await prod.getProduct();
 //     console.log(produ)
 // }
-// // title, description, price, thumbnail, code, status, stock, category
+// // title, description, price, thumbnail, status, stock, category
 // let persistirproductos = async () => {
-//     await prod.addProduct('Monitor', '24"', 1000, 'sin foto', 'uno', true, 10, "hola");
-//     await prod.addProduct('Teclado', '80%', 250, 'sin foto', 'dos', true, 10, "chau");
-//     await prod.addProduct('Cascos', 'Gamer', 500, 'sin foto', 'tres', false, 100, "hola");
-//     await prod.addProduct('Mouse', 'Optico', 110, 'sin foto', 'cuatro', false, 20, "chau");
-//     await prod.addProduct('Monitor', '19"', 1000, 'sin foto', 'cinco', true, 10, "hola");
-//     await prod.addProduct('Teclado', '70%', 250, 'sin foto', 'seis', false, 10, "chau");
-//     await prod.addProduct('Cascos', 'comun', 500, 'sin foto', 'siete', true, 100, "chau");
-//     await prod.addProduct('Mouse', 'Optico', 110, 'sin foto', 'ocho', false, 20, "hola");
+//     await prod.addProduct('Monitor', '24"', 1000, 'sin foto',  true, 10, "hola");
+//     await prod.addProduct('Teclado', '80%', 250, 'sin foto',  true, 10, "chau");
+//     await prod.addProduct('Cascos', 'Gamer', 500, 'sin foto',  false, 100, "hola");
+//     await prod.addProduct('Mouse', 'Optico', 110, 'sin foto',  false, 20, "chau");
+//     await prod.addProduct('Monitor', '19"', 1000, 'sin foto',  true, 10, "hola");
+//     await prod.addProduct('Teclado', '70%', 250, 'sin foto',  false, 10, "chau");
+//     await prod.addProduct('Cascos', 'comun', 500, 'sin foto',  true, 100, "chau");
+//     await prod.addProduct('Mouse', 'Optico', 110, 'sin foto',  false, 20, "hola");
 // }
 // persistirproductos();
 // prod.getProductById(2);
@@ -134,3 +139,4 @@ export default ProductManager;
 // // prod.deleteProduct(8)
 
 // productos()
+
