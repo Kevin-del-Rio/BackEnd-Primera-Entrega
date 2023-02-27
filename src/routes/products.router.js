@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
 // MOSTRAR UN PRODUCTO
 router.get('/:pid', async (req, res) => {
     try {        
-        let id = await Number(req.params.pid);
+        let id = await parseInt(req.params.pid);
         let product = await pm.getProductById(id)
         console.log(product)
         res.status(200).send(product);
