@@ -9,13 +9,8 @@ const pm = new ProductManager();
 
 // MOSTAR TODOS LOS PRODUCTOS
 router.get('/', async (req, res) => {
-    try {
-        let { limit } = req.query
-        let products = await pm.getProduct()
-        if (limit !== undefined) {
-            limit = parseInt(limit);
-            products = limit > 0 ? products.slice(0, limit) : [];
-        }
+    try {    
+        let products = await pm.getProduct()       
         res.status(200).send(products);
     }
     catch (e) {
@@ -27,6 +22,26 @@ router.get('/', async (req, res) => {
         });
     }
 })
+router.get('/query', async(req, res) => {
+    try {    
+        let products = await pm.getProduct() 
+        let limit = req.query.limit;
+        if (limit > 0) {
+            let prod = products.slice(1, limit)
+            res.send(JSON.stringify(prod));
+        } else {
+            res.send(JSON.stringify(products))
+        }
+    }
+    catch (e) {
+        res.status(404).send({
+            status: 'WRONG',
+            code: 409,
+            message: e.message,
+            detail: e.detail
+        });
+    }
+});
 
 // MOSTRAR UN PRODUCTO
 router.get('/:pid', async (req, res) => {

@@ -115,7 +115,7 @@ export default ProductManager;
 
 
 // // // PRODUCTOS
-let prod = new ProductManager();
+// let prod = new ProductManager();
 // console.log(prod);
 // let productos = async () => {
 //     let produ = await prod.getProduct();
@@ -133,7 +133,7 @@ let prod = new ProductManager();
 //     await prod.addProduct('Mouse', 'Optico', 110, 'sin foto',  false, 20, "hola");
 // }
 // persistirproductos();
-prod.getProductById(2);
+// prod.getProductById(2);
 
 // prod.updateProductById(2,{title:'kevin', description: 'Persona', price:1, thumbnail:'sin foto',code:'4fkr5d', status:false,stock:20,category:'chau'} );
 
