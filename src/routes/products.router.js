@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
 // MOSTRAR UN PRODUCTO
 router.get('/:pid', async (req, res) => {
     try {        
-        let id = await Number(req.params.id);
+        let id = await Number(req.params.pid);
         let product = await pm.getProductById(id)
         console.log(product)
         res.status(200).send(product);
@@ -78,7 +78,7 @@ router.put('/:id', async (req, res) => {
         newValue: req.body.newValue
     }
     try {
-        await pm.updateProduct(id, new_product)
+        await pm.updateProductById(id, new_product)
         res.status(200).send({
             status: 'OK',
             message: "Producto actualizado correctamente",
