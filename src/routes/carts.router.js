@@ -7,10 +7,10 @@ const cm = new cartManager();
 // --------------------------------------------------
 // AGREGAMOS UN CARRITO
 router.post('/', async (req, res) => {
-    let products = req.body.products;
+    let cart = req.body.products;
     try {
-        await cm.addcart(products)
-        res.send(products);
+        await cm.addcart(cart)
+        res.send(cart);
     }
     catch (e) {
         res.status(409).send({

@@ -42,8 +42,8 @@ class CartManager {
         }
     }
 
-    addcart = async (product) => {
-        let newCart = { products: product };
+    addcart = async () => {
+        let newCart = {products: []};
         try {
             console.log("Creando nuevo carrito:");
             await this.#prepararDirectorioBaseCart()
@@ -67,7 +67,7 @@ class CartManager {
             const carts = await this.#traerCarts();
             const newCarts = carts.map((c) => {
                 if (c.id === Number(idCart)) {
-                    const index = c.products.findIndex((p) => p.product === Number(idProduct));
+                    const index = c.products.findIndex((p) => p.products === Number(idProduct));
                     if (index === -1) {
                         c.products.push({
                             product: Number(idProduct),
@@ -75,7 +75,7 @@ class CartManager {
                         });
                         return c;
                     }
-                    c.products[index].quantity++;
+                    c.product[index].quantity++;
                 }
                 return c;
             });
@@ -84,7 +84,7 @@ class CartManager {
             console.log(error);
         }
     };
-
+   
     deleteCart = async (id) => {
         try {
             await this.#prepararDirectorioBaseCart();
