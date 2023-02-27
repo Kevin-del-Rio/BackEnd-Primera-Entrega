@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import ProductManager from '../classProduct.js';
+import ProductManager from '../service/classProduct.js';
 // import { uploader } from '../utils.js';
 
 
@@ -68,10 +68,11 @@ router.post('/', async (req, res) => {
             product.title,
             product.description,
             product.price,
-            product.code,
+            product.thumbnail,
+            product.status,
             product.stock,
             product.category,
-            product.thumbnail
+            
         )
         res.status(200).send(product);
     }
@@ -86,24 +87,20 @@ router.post('/', async (req, res) => {
 })
 // // ACTUALIZAR UN PRODUCTO
 router.put('/:id', async (req, res) => {
-    let id = req.params.id
-    let new_product = {
-        id: id,
-        field: req.body.field,
-        newValue: req.body.newValue
-    }
+    let id = parseInt(req.params.id)
+    let updateProd = req.body;
     try {
-        await pm.updateProductById(id, new_product)
+        await pm.updateProductById(id, updateProd)
         res.status(200).send({
             status: 'OK',
             message: "Producto actualizado correctamente",
-            data: new_product
+            data: updateProd
         })
     }
     catch (e) {
         res.status(200).send({
             message: "Producto actualizado correctamente",
-            data: new_product
+            data: updateProd
         })
     }
 })
